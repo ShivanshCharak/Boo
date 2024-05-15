@@ -141,4 +141,11 @@ async function updateAvatar(req, res) {
   }
 }
 
-export { signup, signin, logout, updateAvatar };
+async function getAllUsers(_,res){
+  console.log("hey")
+  const allUser  = await User.find({}).select("-password -email -createdAt -updatedAt")
+  if(!allUser) throw new ApiError(500,"Error occured while fetching data")
+    res.json(new ApiResponse(allUser,200,"Successfully fetched all users"))
+}
+
+export { signup, signin, logout, updateAvatar,getAllUsers };

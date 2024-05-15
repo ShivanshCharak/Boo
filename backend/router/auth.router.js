@@ -1,8 +1,9 @@
 import express from 'express';
-import { signup,signin, logout, updateAvatar } from '../controller/user.controller.js';
+import { signup,signin, logout, updateAvatar, getAllUsers } from '../controller/user.controller.js';
 import { upload } from '../middlewares/multer.middleware.js';
 import verifyJwt from '../middlewares/verifyJwt.js'
-import { postCreator,postSender } from '../controller/post.controller.js';
+import { getSavedPost, postCreator,postSender } from '../controller/post.controller.js';
+
 
 
 const router = express.Router();
@@ -27,7 +28,9 @@ router.post("/create-post",verifyJwt,upload.fields([
  { name:'post',
   maxCount:1}
 ]),postCreator)
-router.get("/sendPosts",postSender)
+router.post("/sendPosts",postSender)
+router.get("/allUsers",getAllUsers)
+router.post("/savedPost",getSavedPost)
 
 
 export default router;

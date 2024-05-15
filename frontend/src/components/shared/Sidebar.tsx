@@ -114,7 +114,7 @@ function handleFileChange(e: ChangeEvent<HTMLInputElement>): void {
           <i className="mr-2 fa-solid fa-user"></i>People
         </div>
         <div
-          onClick={() => nav("/saved")}
+          onClick={() => nav("/savedPost")}
           className="mt-10 ml-5  hover:bg-primary-600 p-5 hover:rounded-md cursor-pointer">
           {" "}
           <i className="mr-2 fa-regular fa-floppy-disk"></i> Saved

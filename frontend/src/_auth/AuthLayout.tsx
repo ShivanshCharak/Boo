@@ -1,26 +1,21 @@
-import React from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
-// import sideImg from '../../public/assets/images/side-img.svg'
+import React from 'react'
+// import './styles.css'
+import Boo from '../assets/boo_noBackground.png'
+import { useNavigate } from 'react-router-dom'
 
-const AuthLayout = () => {
-  const isAuth = false; // Replace this with your actual authentication logic
-
+function AuthLayout() {
+    const nav = useNavigate()
   return (
-    <>
-      {isAuth ? (
-        <Navigate to="/" />
-      ) : (
-        <>
-        <section className='flex flex-1 justify-center items-center flex-col py-10'>
-          <Outlet />
-        </section>
-        {/* <img src='../../public/assets/images/side-img.svg'
-        alt='logo'
-        className="hidden xl:block h-screen w-1/2 object-cover bg-no-repeat"/> */}
-        </>
-      )}
-    </>
-  );
-};
+    <div className='w-screen h-screen bg-bg'>
+        {/* <h1 className=" neon-button">BOO</h1> */}
+        <img src={Boo} className='ml-750 pt-200 '  alt="" />
+        <div>
+            <button onClick={()=>nav("/signup")} className='bg-green-700 px-10 rounded-lg py-4 mx-[540px] hover:co text-black'>Signup</button>
+            <button onClick={()=>nav("/signin")} className='bg-green-700 px-10 rounded-lg py-4  text-black'>Signin</button>
+        </div>
 
-export default AuthLayout;
+    </div>
+  )
+}
+
+export default AuthLayout

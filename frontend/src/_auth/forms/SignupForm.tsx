@@ -1,141 +1,113 @@
-import React,{useContext, useState} from 'react';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Button } from '@/components/ui/button';
-import { Input } from "@/components/ui/input";
+import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import Boo from '../../assets/Boo.png';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { SignupValidation } from '@/lib/validations';
-import  Loader  from '../../components/shared/Loader';
-import { error } from 'console';
-import useCookie from 'react-use-cookie';
-import { SignupContext } from '@/context/SignupContext';
 
-
-type userData={
-  email: "",
-  name: "",
-  password: "",
-  username: ""
+interface FormValues {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 }
 
 function SignupForm() {
-  const isLoading = false;
-  const [cookie,setCookie] = useCookie('')
-   const {userData,setUserData} = useContext(SignupContext)
   const nav = useNavigate()
-  const form = useForm<z.infer<typeof SignupValidation>>({
-    resolver: zodResolver(SignupValidation),
-    defaultValues: {
-      email: "",
-      name: "",
-      password: "",
-      username: ""
-    }
-  });
-  
-
-  async function onSubmit(values: z.infer<typeof SignupValidation>) {
-   setUserData(values)
-    await fetch("http://localhost:3000/auth/signup",{
-      method:"POST",
-      credentials:'include',
-      headers:{
-        "Content-Type": "application/json",
-      },
-      body:JSON.stringify(values)
-    }).then(async response=>{
-      if(!response.ok){
-        console.log(response)
-        const error = await response.json()
-        console.log(error.message)
-      }else{
-        const res = await response.json()
-        // const refreshToken = response.headers.get("Set-ookie")
-        console.log(res)
-        nav("/home")
-      }
-    }).catch(error=>{
-
-      console.error("There was an eror with fetch",error)
-    })
+  const initialValues: FormValues = {
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   }
 
+  const validationSchema = Yup.object({
+    username: Yup.string().required('Username is required'),
+    email: Yup.string().required('Email is required').email('Invalid email format'),
+    password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters'),
+    confirmPassword: Yup.string().required('Confirm Password is required').oneOf([Yup.ref('password')], 'Passwords must match'),
+  });
+
+  const { handleSubmit, handleChange, values, errors, touched } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: (values) => {
+      fetch("http://localhost:3000/api/v1/auth/register",{
+        method:"POST",
+        headers:{
+          "content-type":"application/json",
+        },
+        credentials:"include",
+        body:JSON.stringify(values)
+      }).then(async response=>{
+       const res = await response.json();
+       console.log(res)
+       nav("/signin")
+      })
+    }
+  });
+
   return (
-    <Form {...form}>
-      <div className="sm:w-420 flex-center flex-col">
-        <img src="/assets/images/logo.svg"/>
-        <h2 className='h3-bold md:h2-bold pt-5 sm:pt-12'>Create a new Account</h2>
-        <p className="text-light-3 small-medium md:base-regular">To usee Rpple Hub Enter your details</p>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col gap-5 w-full mt-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input type='text' className='shad-input' placeholder="username" {...field} />
-              </FormControl>
-              
-              <FormMessage className='text-red'/>
-            </FormItem>
-          )}
-          />
-           <FormField
-          control={form.control}
+    <div className='w-screen h-screen bg-dark-1 flex justify-center items-center'>
+      <form onSubmit={handleSubmit} className='flex flex-col w-96'>
+        <img src={Boo} alt="Boo" />
+        <h1 className='text-white text-4xl text-center'>Create your Account</h1>
+        <p className='text-lg text-gray-400 text-center mt-5'>Enter the details and start socializing</p>
+
+        <label className="mt-4 text-2xl text-white" htmlFor="username">Username</label>
+        <input
+          autoComplete='off'
+          className='bg-dark-4 mt-4 p-4 rounded-lg focus:outline-dashed text-white'
+          type="text"
+          id="username"
           name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input type='text' className='shad-input' placeholder="username" {...field} />
-              </FormControl>
-              
-              <FormMessage className='text-red'/>
-            </FormItem>
-          )}
-          />
-           <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type='text' className='shad-input' placeholder="username" {...field} />
-              </FormControl>
-              
-              <FormMessage className='text-red'/>
-            </FormItem>
-          )}
-          />
-           <FormField
-          control={form.control}
+          onChange={handleChange}
+          value={values.username}
+          required
+        />
+        {errors.username && touched.username && <div className="text-red">{errors.username}</div>}
+
+        <label className="mt-4 text-2xl text-white" htmlFor="password">Password</label>
+        <input
+          autoComplete='off'
+          className='bg-dark-4 mt-4 p-4 rounded-lg focus:outline-dashed text-white'
+          type="password"
+          id="password"
           name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type='text' className='shad-input' placeholder="username" {...field} />
-              </FormControl>
-              
-              <FormMessage className='text-red'/>
-            </FormItem>
-          )}
-          />
-        <Button className='shad-button_primary' type="submit">{isLoading?
-        <div className='flex-center gap-2'><Loader/> Loading</div>:"Submit"}
-        </Button>
-        <p className="text-small-regular text-light-2 text-center mt-2">
-          Already Have an account? <Link to="/sign-in" className='text-primary-500 text-small-semibold'>Login</Link>
-        </p>
+          onChange={handleChange}
+          value={values.password}
+          required
+        />
+        {errors.password && touched.password && <div className="text-red">{errors.password}</div>}
+
+        <label className="mt-4 text-2xl text-white" htmlFor="confirmPassword">Confirm Password</label>
+        <input
+          autoComplete='off'
+          className='bg-dark-4 mt-4 p-4 rounded-lg focus:outline-dashed text-white'
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          onChange={handleChange}
+          value={values.confirmPassword}
+          required
+        />
+        {errors.confirmPassword && touched.confirmPassword && <div className="text-red">{errors.confirmPassword}</div>}
+
+        <label className="mt-4 text-2xl text-white" htmlFor="email">Email</label>
+        <input
+          autoComplete='off'
+          className='bg-dark-4 mt-4 p-4 rounded-lg focus:outline-dashed text-white'
+          type="email"
+          id="email"
+          name="email"
+          onChange={handleChange}
+          value={values.email}
+          required
+        />
+        {errors.email && touched.email && <div className="text-red">{errors.email}</div>}
+
+        <button className='cursor-pointer text-black bg-neon-purple mt-10 p-4 rounded-lg focus:outline-dashed' type="submit">Submit</button>
       </form>
-          </div>
-    </Form>
-  
+    </div>
   );
 }
 

@@ -1,14 +1,13 @@
-export type IUser={
-    id:String,
-    name:String,
-    username:String,
-    email:String,
-    imageUrl:String,
-    bio:String,
-
+export type ICurrentUser={
+    username:string,
+    refreshToken:string,
+    accessToken:string,
+    avatar:string|URL,
+    shortName:string
 }
-export type INavLink ={
-    imgURL:string,
-    route:string,
-    label:string,
+
+export type IAuthContextProvider={
+    currentUser:ICurrentUser,
+    setCurrentUser:React.Dispatch<React.SetStateAction<ICurrentUser>>
+
 }

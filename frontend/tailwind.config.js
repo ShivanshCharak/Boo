@@ -33,6 +33,10 @@ module.exports = {
         'light-2': '#EFEFEF',
         'light-3': '#7878A3',
         'light-4': '#5C5C7B',
+        'neon-purple':'#6E0DD0',
+        'orange-red':"#da4628",
+        'neon':'hsl(317 100% 54%)',
+         'bg':'hsl(323 21% 16%)'
       },
       screens: {
         'xs': '480px',
@@ -40,7 +44,17 @@ module.exports = {
       },
       width: {
         '420': '420px',
+        '320': '320px',
         '465': '465px',
+        
+        
+      },
+      margin:{
+        '750':'750px',
+        
+      },
+      padding:{
+        '200':'200px',
       },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],

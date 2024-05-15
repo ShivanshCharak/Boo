@@ -1,40 +1,24 @@
 import React from 'react'
-import SigninFrom from './_auth/forms/SigninFrom'
-import SignupForm from './_auth/forms/SignupForm'
-import { AllUsers, CreatePost, EditPost, Explore, Home, PostDetails, Profile, Saved, UpdateProfile } from './_root/pages/index'
-
-// impor
-import './globals.css'
+import './global.css'
 import {Routes,Route} from 'react-router-dom'
+import SignupForm from './_auth/forms/SignupForm'
+import SigninForm from './_auth/forms/SigninForm'
 import AuthLayout from './_auth/AuthLayout'
+import Home from './_root/pages/Home'
 import RootLayout from './_root/RootLayout'
-const App = () => {
+import CreatePost from './_root/pages/CreatePost'
+function App() {
   return (
-    <main className="flex h-screen">
-        <Routes>
-            <Route element={<AuthLayout/>}>
-            {/* Public routes */}
-                <Route path='/sign-in' element={<SigninFrom/>}/>
-                <Route path='/sign-up' element={<SignupForm/>}/>
+    <Routes>
+      <Route path="/" element={<AuthLayout/>}/>
+        <Route path="/signup" element={<SignupForm/>}/>
+        <Route path="/signin" element={<SigninForm/>}/>
+        <Route element={<RootLayout/>}>
+        <Route path="/home" element={<Home/>}/>
+        <Route path="/create-post" element={<CreatePost/>}/>
+        </Route>
 
-             {/* Public routes */}
-
-            </Route>
-            <Route element={<RootLayout/>}>
-                <Route index element={<Home/>}/>
-                <Route path='/explore' element={<Explore/>}/>
-                <Route path='/saved' element={<Saved/>}/>
-                <Route path='/all-users' element={<AllUsers/>}/>
-                <Route path='/create-post' element={<CreatePost/>}/>
-                <Route path='/update-post/:id' element={<EditPost/>}/>
-                <Route path='posts/:id' element={<PostDetails/>}/>
-                <Route path='/profile/:id/*' element={<Profile/>}/>
-                <Route path='update-profile/:id' element={<UpdateProfile/>}/>
-
-            </Route>
-
-        </Routes>
-    </main>
+    </Routes>
   )
 }
 

@@ -10,7 +10,7 @@ function Explore() {
         fetch("http://localhost:3000/api/v1/user/sendPosts", {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${currentUser.accessToken}`,
+            authorization: `Bearer ${currentUser.accessToken}`,
           },
         })
         .then(async (response) => {

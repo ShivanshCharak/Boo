@@ -12,6 +12,7 @@ export type IAuthContextProvider={
 
 }
 export type IPostData={
+    _id?:string
     post:string,
     caption:string,
     location:string,
@@ -19,8 +20,10 @@ export type IPostData={
     tags:string,
     createdAt:string,
     avatar:string
+    isLiked?:boolean
+    isSaved?:boolean
 }
-export type IPostContext={
+export type IPostState={
     postData:IPostData,
     setPostData:React.Dispatch<React.SetStateAction<IPostData>>
 

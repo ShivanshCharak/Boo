@@ -11,6 +11,7 @@ import Explore from './_root/pages/Explore'
 import PostDetails from './_root/pages/PostDetails'
 import People from './_root/pages/People'
 import SavedPost from './_root/pages/SavedPost'
+import UserProfile from './_root/pages/UserProfile'
 function App() {
   return (
     <Routes>
@@ -24,6 +25,7 @@ function App() {
         <Route path="/People" element={<People/>}/>
         <Route path="/savedPost" element={<SavedPost/>}/>
         <Route path ="/postDetails/:id" element={<PostDetails/>}/>
+        <Route path ="/user/:id" element={<UserProfile/>}/>
         </Route>
     </Routes>
   )

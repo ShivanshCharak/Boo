@@ -14,6 +14,7 @@ export const AuthContext = createContext<IAuthContextProvider>({currentUser:INIT
 // Create the context provider component
 export function AuthContextProvider({ children }:{children:ReactNode}) {
     const [currentUser, setCurrentUser] = useState<ICurrentUser>(INITIAL_USER);
+    console.log("getting called")
     
     return (
         <AuthContext.Provider value={{ currentUser, setCurrentUser }}>

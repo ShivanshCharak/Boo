@@ -73,7 +73,7 @@ async function signin(req, res) {
     throw new ApiError(
       400,
       error.message,
-      "Something went wrong while signining on line 71"
+      "Something went wrong"
     );
   }
 }

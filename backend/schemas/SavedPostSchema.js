@@ -3,10 +3,18 @@ import { User } from "./userSchema.js";
 import { Post } from "./postSchema.js";
 
 const savedPost  = new Schema({
-  postId:{
-    type:Schema.Types.ObjectId,
-    ref:Post
-  },
+  savedPost:[
+    {
+      postId:{
+        type:Schema.Types.ObjectId,
+        ref:'POST'
+      },
+      isSaved:{
+        type:Boolean,
+        required:true
+      }
+    }
+  ],
   user:{
     type:String,
     ref:User

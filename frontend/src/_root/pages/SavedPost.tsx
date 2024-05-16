@@ -6,31 +6,22 @@ function SavedPost() {
     const [post, setPost] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/v1/user/savedPost", {
-            method: "get",
+        fetch("http://localhost:3000/api/v1/user/getSaved", {
+            method: "post",
             headers: {
-                "Authorization": `Bearer ${currentUser.accessToken}`
+                "authorization": `Bearer ${currentUser.accessToken}`
             }
         }).then(async (response) => {
             const res = await response.json();
-            setPost(res.data);
+            setPost(res);
+            console.log(res.data)
         }).catch(err => console.log(err));
     }, []);
 
     return (
         <div>
-            {post && (
-                <>
-                    {post.map(postItem => {
-                        return (
-                            <>
-                                {console.log(postItem)}
-                                {/* Render your postItem here */}
-                            </>
-                        );
-                    })}
-                </>
-            )}
+            {console.log("hey")}
+
         </div>
     );
 }

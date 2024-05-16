@@ -17,7 +17,7 @@ function PostDetails() {
           {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${currentUser.accessToken}`,
+              authorization: `Bearer ${currentUser.accessToken}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ id: id }), // Send id as JSON object

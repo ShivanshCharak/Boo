@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-// import { useContext } from 'react'
+
 function People() {
   const { currentUser } = useContext(AuthContext);
   const [allUser, setAllUser] = useState();
@@ -9,25 +9,25 @@ function People() {
     fetch("http://localhost:3000/api/v1/user/allUsers", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${currentUser.accessToken}`,
+        authorization: `Bearer ${currentUser.accessToken}`,
       },
     }).then(async (response) => {
       const res = await response.json();
-
       setAllUser(res.data);
     });
   }, []);
+
   return (
     <>
-      <div className="w-screen h-screen">
-        <h1 className="mt-[10rem] w-[75rem] mx-auto font-black text-4xl text-white mb-[10px]">
+      <div className="w-screen h-screen flex flex-col overflow-scroll bg-black">
+        <h1 className="mt-[10rem] w-screen mx-auto font-black text-4xl text-white mb-[10px]">
           All Users
         </h1>
         {allUser && (
           <>
             {allUser.map((user) => {
               return (
-                <div className=" rounded-xl border border-light-3 flex flex-row p-3 items-center bg-dark-4 text-white mx-auto w-[1200px] mb-[20px]">
+                <div key={user.id} className="rounded-xl border border-light-3 flex flex-row p-3 items-center bg-dark-4 text-white mx-auto w-[1200px] mb-[20px]">
                   <img
                     className="object-fit size-[100px] rounded-full"
                     src={user.avatar}

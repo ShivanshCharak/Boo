@@ -42,7 +42,7 @@ function CreatePost() {
       fetch("http://localhost:3000/api/v1/user/create-post", {
         method: "post",
         headers: {
-          "Authorization": `Bearer ${currentUser.accessToken}`,
+          "authorization": `Bearer ${currentUser.accessToken}`,
           
         },
         body: formData,

@@ -48,7 +48,7 @@ UserSchema.methods.generateAccessToken = async function(){
   },
   process.env.ACCESS_TOKEN_SECRET,
   {
-    expiresIn:'10m'
+    expiresIn:'1d'
   }
 )
 }

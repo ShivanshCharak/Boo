@@ -4,3 +4,74 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities{
+    /* Home page */
+    .outer-main-container{
+        @apply mt-[100px] ml-[150px] col-span-6 h-screen bg-dark-1 text-white
+    }
+    .main-flex-home-container{
+        @apply  mt-[5rem] mx-auto flex
+
+    }
+    .home-feed{
+       /* @apply w-[100%] */
+    }
+    .heading{
+        @apply  font-black text-white  text-4xl mb-10
+    }
+    .card{
+        @apply rounded-3xl  w-[700px] bg-dark-3 mt-10 p-4 border-2 border-dark-4
+    }
+    .topBar{
+        @apply  flex flex-row justify-start items-center
+    }
+    .post-details-container{
+        @apply  flex flex-col ml-4
+    }
+    .bottom-card-container{
+        @apply flex flex-col  items-center
+    }
+    .lower-card-container{
+        @apply flex flex-row justify-between mt-10 w-full
+    }
+
+    .people-main-container{
+        @apply w-screen h-screen flex flex-col overflow-scroll bg-black
+    }
+    .people-feed-heading{
+        @apply mx-auto font-black text-4xl text-white mb-[50px]
+    }
+    .user-card-outlay{
+        @apply rounded-xl border border-light-3 flex flex-row p-3 items-center bg-dark-4 text-white mx-auto w-[1200px] mb-[20px]
+    }
+    .user-avatar{
+        @apply object-fill size-[100px] rounded-full
+    }
+    .user-username{
+      @apply  size-[20px] mt-[-40px] ml-[10px] font-black text-xl
+    }
+    .user-follow-button{
+        @apply ml-[55rem] bg-neon-purple rounded-lg px-8 cursor-pointer py-3
+    }
+    .user-follow-button2{
+        @apply ml-[5rem] bg-neon-purple rounded-lg px-8 cursor-pointer py-3
+    }
+    
+    /* Explore.tsx */
+    .explore-container{
+        @apply flex flex-col mt-[100px] text-white
+    }
+    .searchbar-div{
+        @apply flex bg-dark-4 focus:outline-none rounded-md p-4 bg-dark-4 w-[1400px] 
+    }
+    .searchbar-input{
+        @apply  bg-dark-4 ml-[20px] focus:outline-none w-[1400px]
+    }
+    .second-layer{
+        @apply  flex justify-between w-[1400px] mt-[20px]
+    }
+    /* CreatePost.tsx */
+    .create-post-form-container{
+        @apply bg-dark-1 w-[1620px] ml-[300px] pt-[40px] p-[60px]  h-full text-white
+    }
+}

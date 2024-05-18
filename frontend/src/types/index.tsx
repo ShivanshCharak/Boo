@@ -1,4 +1,5 @@
 export type ICurrentUser={
+    _id?:string,
     username:string,
     refreshToken:string,
     accessToken:string,
@@ -13,13 +14,13 @@ export type IAuthContextProvider={
 }
 export type IPostData={
     _id?:string
-    post:string,
-    caption:string,
-    location:string,
-    user:string,
-    tags:string,
-    createdAt:string,
-    avatar:string
+    post?:string,
+    caption?:string,
+    location?:string,
+    user?:string,
+    tags?:string,
+    createdAt?:string,
+    avatar?:string
     isLiked?:boolean
     isSaved?:boolean
 }

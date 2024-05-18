@@ -63,7 +63,9 @@ function CreatePost() {
   };
 
   return (
-    <div className="bg-dark-1 w-[1620px] ml-[300px] pt-[40px] p-[60px]  h-full text-white">
+    <div className="col-span-10 h-screen overflow-scroll">
+
+    <div className="bg-dark-1 w-[1620px] pt-[40px] p-[60px]  h-full text-white">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col"
@@ -80,7 +82,7 @@ function CreatePost() {
 
         <label htmlFor="location">Location</label>
         <input
-          className="outline-green h-[50px] rounded-lg bg-dark-4"
+          className="outline-green h-[50px] rounded-lg p-5 bg-dark-4"
           type="text"
           id="location"
           name="location"
@@ -120,7 +122,7 @@ function CreatePost() {
           Add Tags (separated by commas "," )
         </label>
         <input
-          className=" outline-green h-[100px] rounded-lg bg-dark-4"
+          className=" outline-green h-[100px] p-5 rounded-lg bg-dark-4"
           type="text"
           id="tags"
           name="tags"
@@ -134,7 +136,10 @@ function CreatePost() {
           type="submit">
           Submit
         </button>
+        
+      
       </form>
+    </div>
     </div>
   );
 }

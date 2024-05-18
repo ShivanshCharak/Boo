@@ -73,8 +73,9 @@ function handleFileChange(e: ChangeEvent<HTMLInputElement>): void {
     convertToBase64(avatarFile)
   }
   return (
-    <div className="fixed sidebar max-w-[350px] h-screen bg-dark-3 text-white">
-      <img src={Boo} className="w-40 mx-20 " alt="" />
+    <div className="fixed col-span-1 w-[300px] h-screen bg-dark-3 text-white">
+      <i className="fa-solid fa-right-from-bracket opacity-5"></i>  
+      <img src={Boo} className="w-0 mx-20 " alt="" />
 
       <div className="flex  max-w-50 ml-2 mt-10">
         <input
@@ -87,7 +88,6 @@ function handleFileChange(e: ChangeEvent<HTMLInputElement>): void {
           onClick={handleUploadAvatar}
           className="w-20 h-20 bg-dark-4 rounded-full flex place-content-center cursor-pointer">
           <img src={currentUser.avatar} width={20} height={20} className="w-20 rounded-full overflow-hidden" alt="" />
-          
         </div>
         <div className="username-wrapper h-20">
           <div className="mt-3 ml-3 font-bold text-nowrap text-xl">
@@ -124,12 +124,13 @@ function handleFileChange(e: ChangeEvent<HTMLInputElement>): void {
           className="mt-10 ml-5  hover:bg-primary-600 p-5 hover:rounded-md cursor-pointer ">
           <i className="mr-2 fa-solid fa-image"></i>Create Post
         </div>
-      </div>
-      <div onClick={handleLogout} className="cursor-pointer">
-        <i className="mt-20 mr-10 ml-10 cursor-pointer fa-solid fa-right-from-bracket"></i>
+      <div onClick={handleLogout} className=" mt-[100px] ml-[40px] flex">
+        
+        <img src="../../../public/public/assets/icons/logout.svg" className="mr-[10px]"></img>
         Logout
       </div>
-    </div>
+      </div>
+      </div>
   );
 }
 

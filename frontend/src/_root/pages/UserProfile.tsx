@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import edit from "../../../public/public/assets/icons/edit.svg";
 
 function UserProfile() {
@@ -9,6 +9,7 @@ function UserProfile() {
   const [isPostClicked, setIsPostClicked] = useState(false);
   const [isLikedClicked, setIsLikedClicked] = useState(false);
   const { id } = useParams();
+
 
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/user/getPost", {
@@ -55,18 +56,18 @@ function UserProfile() {
                     <h1>
                       <span className="text-purple-700  mr-[3px]">0</span> post
                     </h1>
-                    <h2>
+                    <p className="cursor-pointer" onClick={()=>getUserConnections(currentUser._id)}>
                       <span className="text-purple-700 ml-[10px] mr-[3px]  ">
                         {Math.floor(Math.random() * 100)}
                       </span>{" "}
                       Followers
-                    </h2>
-                    <h2>
+                    </p>
+                    <p className="cursor-pointer" onClick={()=>getUserConnections(currentUser._id)}>
                       <span className="text-purple-700 ml-[10px] mr-[4px] text-purple-500">
                         {Math.floor(Math.random() * 100)}
                       </span>
                       Following
-                    </h2>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -99,14 +100,16 @@ function UserProfile() {
                 </div>
               </div>
             </div>
+              <Link to="/create-post">
             <div className="w-[180px] rounded-lg  px-5 py-2 bg-dark-4  text-white col-span-1 cursor-pointer flex items-center">
               <img
                 className="size-[20px] mr-[20px]"
                 src="../../../public/public/assets/icons/edit.svg"
                 alt=""
               />
-              <span className="font-black text-lg">Edit post</span>
+            <span  className="font-black text-lg">Edit post</span>
             </div>
+            </Link>
             <div className=" flex w-[1000px]  h-screen mx-auto">
               <div className="w-full text-white flex flex-col items-center justify-center">
                 <img className="w-[200px] mt-[-200px]" src="../../../public/public/assets/icons/file-upload.svg" alt="" />

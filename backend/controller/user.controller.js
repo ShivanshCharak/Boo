@@ -36,6 +36,7 @@ async function signup(req, res) {
   const createdUser = await User.findById(user?._id).select(
     "-password -refreshToken"
   );
+  await user.save()
 
   if (!createdUser) {
     throw new ApiError(404, "Error occurred while saving the user");

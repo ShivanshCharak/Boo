@@ -1,9 +1,10 @@
 import React, { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../../utils/contexts/AuthContext";
-import { ICurrentUser } from "../../types";
+import { ICurrentUser,IFollow } from "../../types";
 
 function People() {
   const { currentUser } = useContext(AuthContext);
+  const [follow,setFollow] = useState<IFollow>({followerId:currentUser._id as string,followingId:""})
   const [allUser, setAllUser] = useState<(ICurrentUser & { isFollowed: boolean })[]>([]);
 
   useEffect(() => {
@@ -11,25 +12,37 @@ function People() {
       method: "GET",
       headers: {
         authorization: `Bearer ${currentUser.accessToken}`,
+
       },
     }).then(async (response) => {
       const res = await response.json();
       const usersWithFollowStatus = res.data.map((user: ICurrentUser) => ({
         ...user,
-        isFollowed: false, // Initialize follow status
+        isFollowed: false
       }));
       setAllUser(usersWithFollowStatus);
     });
   }, [currentUser.accessToken]);
 
   const handleFollowToggle = (userId: string) => {
-    setAllUser((prevUsers) =>
-      prevUsers.map((user) =>
-        user._id === userId
-          ? { ...user, isFollowed: !user.isFollowed }
-          : user
-      )
-    );
+    // if (!follow.followingList.includes(userId)){
+      setFollow({
+        ...follow,
+        followingId:userId
+      })
+      console.log(follow)
+      
+      fetch("http://localhost:3000/api/v1/user/addfollower",{
+        method:"POST",
+        headers:{  
+          'authorization': `Bearer ${currentUser.accessToken}`,
+          'content-type': 'application/json'
+        },
+        body:JSON.stringify(follow)
+      }).then(async(Response)=>{
+        
+      })
+    // }
   };
 
   return (

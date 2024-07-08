@@ -38,3 +38,7 @@ export const INITIAL_POST_VALUES={
     createdAt:"",
     avatar:""
 }
+export type IFollow={
+    followerId:String,
+    followingId:String
+}

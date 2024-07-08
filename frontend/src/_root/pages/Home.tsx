@@ -53,77 +53,78 @@ function Home() {
 
   return (
     <>
-
       <div className="outer-main-container">
-
-          {/* <div className=""> */}
-            <h1 className="heading">Home Feed</h1>
-            {postData &&
-              postData.map((post) => {
-                return (
-                  <div key={post._id} className="card ">
-                    <div className="topBar">
-                      <img
-                        src={post.avatar}
-                        className="w-20 rounded-full"
-                        alt=""
-                      />
-                      <div className="post-details-container">
-                        <Link to={`/user/${post.user}`}>
-                          <h1 className="font-black">{post.user}</h1>
-                        </Link>
-                        <div className="flex flex-row text-light-3">
-                          <h1 className="mr-2">{post.createdAt}</h1>
-                          <h1> - {post.location}</h1>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="bottom-card-container ">
-                      <h1 className="mb-3 ml-[-530px] ">{post.caption}</h1>
-                      <Link to={`/postDetails/${post._id}`}>
-                        <img
-                          className="w-[600px] h-auto rounded-3xl"
-                          src={post.post}
-                          alt=""
-                        />
-                      </Link>
-                      <div className="lower-card-container">
-                        <img
-                          onClick={() => handleIsLiked(post._id || "")}
-                          className="w-7 cursor-pointer"
-                          src={
-                            post.isLiked
-                              ? "../../../public/public/assets/icons/liked.svg"
-                              : "../../../public/public/assets/icons/like.svg"
-                          }
-                          alt="Like button"
-                        />
-                        <img
-                          onClick={() => handleSavedPost(post._id || "")}
-                          className="w-7 cursor-pointer"
-                          src={
-                            post.isSaved
-                              ? "../../../public/public/assets/icons/saved.svg"
-                              : "../../../public/public/assets/icons/save.svg"
-                          }
-                          alt="Save button"
-                        />
-                      </div>
+        {/* <div className=""> */}
+        <h1 className="heading">Home Feed</h1>
+        {postData &&
+          postData.map((post) => {
+            return (
+              <div key={post._id} className="card ">
+                <div className="topBar">
+                  <img src={post.avatar} className="w-20 rounded-full" alt="" />
+                  <div className="post-details-container">
+                    <Link to={`/user/${post.user}`}>
+                      <h1 className="font-black">{post.user}</h1>
+                    </Link>
+                    <div className="flex flex-row text-light-3">
+                      <h1 className="mr-2">{post.createdAt}</h1>
+                      <h1> - {post.location}</h1>
                     </div>
                   </div>
-                );
-              })}
-          {/* </div> */}
+                </div>
+                <div className="bottom-card-container ">
+                  {/* <h1 className="mb-3 flex justify-start ">{post.caption}</h1> */}
+                  <Link to={`/postDetails/${post._id}`}>
+                    <img
+                      className="w-[600px] h-auto rounded-3xl"
+                      src={post.post}
+                      alt=""
+                    />
+                  </Link>
+                  <div className="lower-card-container">
+                    <img
+                      onClick={() => handleIsLiked(post._id || "")}
+                      className="w-7 cursor-pointer"
+                      src={
+                        post.isLiked
+                          ? "../../../public/public/assets/icons/liked.svg"
+                          : "../../../public/public/assets/icons/like.svg"
+                      }
+                      alt="Like button"
+                    />
+                    <img
+                      onClick={() => handleSavedPost(post._id || "")}
+                      className="w-7 cursor-pointer"
+                      src={
+                        post.isSaved
+                          ? "../../../public/public/assets/icons/saved.svg"
+                          : "../../../public/public/assets/icons/save.svg"
+                      }
+                      alt="Save button"
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        {/* </div> */}
       </div>
       <div className="col-span-3">
         <h2 className="heading">Top Posts</h2>
-        {topPosts && topPosts.map((post) => (
+        {topPosts &&
+          topPosts.map((post) => (
             <div key={post._id} className="mb-4">
               <Link to={`/postDetails/${post._id}`}>
-                <img className="w-full h-auto rounded-3xl" src={post.post} alt="" />
+                <img
+                  className="w-full h-auto rounded-3xl"
+                  src={post.post}
+                  alt=""
+                />
               </Link>
               <h3 className="font-bold mt-2">{post.caption}</h3>
-              <p className="text-light-3">{post.user} - {post.createdAt}</p>
+              <p className="text-light-3">
+                {post.user} - {post.createdAt}
+              </p>
             </div>
           ))}
       </div>

@@ -1,10 +1,9 @@
 import {mongoose , Schema} from 'mongoose'
-
+import { User } from './userSchema.js'
+const followers = new Schema({
+  type:Schema.Types.Array,
+})
 const UserConnectionSchema = new Schema({
-  userId:{
-    type:Schema.Types.ObjectId,
-    ref:User
-  },
   followerId:{
     type:Schema.Types.ObjectId,
     ref:User,
@@ -12,6 +11,7 @@ const UserConnectionSchema = new Schema({
   followingId:{
     type:Schema.Types.ObjectId,
     ref:User,
+    
   }
 })
-export const UserConnection = mongoose.Model('UserConnectionSchema',UserConnectionSchema)
+export const Connection = mongoose.model('Connection',UserConnectionSchema)

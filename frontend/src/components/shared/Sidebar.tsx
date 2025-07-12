@@ -91,7 +91,7 @@ function handleFileChange(e: ChangeEvent<HTMLInputElement>): void {
         </div>
         <div className="username-wrapper h-20">
           <div className="mt-3 ml-3 font-bold text-nowrap text-xl">
-            {currentUser?.username}
+            {currentUser?.shortName}
           </div>
           <div className="ml-5 text-light-3">@scharak24</div>
         </div>

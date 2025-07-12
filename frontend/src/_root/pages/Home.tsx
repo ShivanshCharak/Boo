@@ -1,16 +1,17 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import { IPostData } from "../../types";
 
 function Home() {
   const [postData, setPostsData] = useState<IPostData[]>([]);
   const { currentUser } = useContext(AuthContext);
-  const [topPosts, setTopPosts] = useState(postData); // State for top posts
-
+  const [topPosts, setTopPosts] = useState(postData);
+{console.log(currentUser)}
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/user/sendPosts", {
-      method: "post",
+      method: "POST",
       headers: {
         authorization: `bearer ${currentUser.accessToken}`,
       },
@@ -22,10 +23,10 @@ function Home() {
           return { ...post, isSaved: false, isLiked: false };
         })
       );
-      // Assuming top posts are the first 3 posts for simplicity
       setTopPosts(res.slice(0, 3));
     });
   }, [currentUser.accessToken]);
+
 
   function handleSavedPost(id: string): void {
     setPostsData((prevData: IPostData[]) => {
@@ -72,11 +73,17 @@ function Home() {
                     </div>
                   </div>
                 </div>
+                <div className="ml-14 mb-8 mt-10">
+                <p className="font-semibold mb-6">{post.caption}</p> 
+                {post.tags?.split(",").map((val,index)=>(
+                  <span className="text-sm  p-2 cursor-pointer hover:bg-zinc-600 bg-zinc-800 rounded-md ml-5  " key={index}># {val}</span>
+                ))}                   
+                </div>
                 <div className="bottom-card-container ">
                   {/* <h1 className="mb-3 flex justify-start ">{post.caption}</h1> */}
                   <Link to={`/postDetails/${post._id}`}>
                     <img
-                      className="w-[600px] h-auto rounded-3xl"
+                      className="w-[600px] h-auto rounded-3xl border border-zinc-500"
                       src={post.post}
                       alt=""
                     />

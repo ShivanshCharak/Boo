@@ -6,9 +6,7 @@ function SavePost({id}) {
     useEffect(()=>{
         fetch("http://localhost:3000/api/v1/user/savePost",{
             method:"post",
-            headers:{
-                "Authorization": `Bearer ${currentUser.accessToken}`
-            },
+            credentials:"include",
             body:JSON.stringify({id:id})
         })
     })

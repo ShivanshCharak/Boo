@@ -11,8 +11,9 @@ function Home() {
   const [topPosts, setTopPosts] = useState(postData);
 {console.log(currentUser)}
   useEffect(() => {
-    const userData  =  sessionStorage.getItem("user")
-    JSON.stringify(userData))
+    const userData  =  JSON.stringify(sessionStorage.getItem("user"))
+    console.log(userData)
+    
     // setCurrentUser(JSON.parse(userData))
     fetch("http://localhost:3000/api/v1/user/sendPosts", {
       method: "POST",

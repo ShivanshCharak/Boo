@@ -10,10 +10,7 @@ function People() {
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/user/allUsers", {
       method: "GET",
-      headers: {
-        authorization: `Bearer ${currentUser.accessToken}`,
-
-      },
+      credentials:"include"
     }).then(async (response) => {
       const res = await response.json();
       const usersWithFollowStatus = res.data.map((user: ICurrentUser) => ({
@@ -21,6 +18,7 @@ function People() {
         isFollowed: false
       }));
       setAllUser(usersWithFollowStatus);
+      
     });
   }, [currentUser.accessToken]);
 

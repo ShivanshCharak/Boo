@@ -54,11 +54,11 @@ function SigninForm() {
           
           setCurrentUser(userData); // ✅ Triggers re-render
           console.log("user",currentUser)
-          // ✅ Use the same data directly
+          
           sessionStorage.setItem("user", JSON.stringify(userData));
           
           console.log(currentUser)
-          sessionStorage.setItem("user",JSON.stringify(currentUser))
+          // sessionStorage.setItem("user",JSON.stringify(currentUser))
           toast.success("Login successful! Redirecting...", {
             position: "top-center",
             autoClose: 2000,

@@ -38,14 +38,12 @@ function Sidebar() {
       fetch("http://localhost:3000/api/v1/user/updateAvatar", {
         method: "POST",
         credentials: "include",
-        headers: {
-          Authorization: `Bearer ${currentUser.accessToken}`,
-        },
         body: formData
       })
       .then(async (response) => {
           const res = await response.json();
           setCurrentUser(res.user)
+          console.log(currentUser)
         })
         .catch((err) => console.error(err));
     } else {

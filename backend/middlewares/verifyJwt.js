@@ -5,7 +5,7 @@ import { ApiError } from "../utils/ApiError.js";
 async function verifyJwt(req, res, next) {
  try {
    const accessToken =req.cookies.accessToken
-
+   console.log(req.cookes)
    const data = await jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
    if(!data) throw new ApiError(500,"Failed to verify")
     console.log(data)

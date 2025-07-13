@@ -3,12 +3,18 @@ import { AuthContext } from '../../utils/contexts/AuthContext';
 import { get } from 'idb-keyval';
 import { FiBookmark, FiHeart, FiMessageSquare, FiMoreHorizontal } from 'react-icons/fi';
 import { formatDistanceToNow } from 'date-fns';
+import { sessionToHook, UnAuthorize } from '../../utils/sessionToHook';
+import { useNavigate } from 'react-router-dom';
 
 function SavedPost() {
     const { currentUser, setCurrentUser } = useContext(AuthContext);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const nav = useNavigate()
 
+    function handleHover(index:number){
+        console.log(index)
+    }
     useEffect(() => {
         async function getData() {
             try {
@@ -16,20 +22,13 @@ function SavedPost() {
                 if (unsavedPosts) {
                     setPosts(unsavedPosts);
                 }
-                
-                const userData = sessionStorage.getItem("user");
-                if (userData) {
-                    const user = JSON.parse(userData);
-                    const updatedUser = {
-                        _id: user._id,
-                        username: user.username,
-                        avatar: user.avatar || '',
-                        accessToken: user.accessToken,
-                        refreshToken: user.refreshToken,
-                        shortName: user.username
-                    };
-                    setCurrentUser(updatedUser);
+                const current = await sessionToHook()                                            // STORING SESSION DATA TO HOOK
+                setCurrentUser(current)
+                const unvalid = await UnAuthorize()
+                if(unvalid){
+                    nav("/")
                 }
+               
             } catch (error) {
                 console.error("Error loading saved posts:", error);
             } finally {
@@ -48,7 +47,7 @@ function SavedPost() {
     }
 
     return (
-        <div className="w-[70vw] mx-auto px-4 py-8">
+        <div className="w-[80vw] mx-auto px-4 py-8">
             {/* Header Section */}
             <div className="flex items-center mb-8">
                 <div className="mr-6">
@@ -83,68 +82,76 @@ function SavedPost() {
                         <p className="text-gray-500 mt-2">When you save posts, they'll appear here.</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 group">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+                        {/* SAVED CARDS LOOP */}
                         {posts.map((post, index) => (
-                            <div key={index} className="relative bg-zinc-900 rounded-lg overflow-hidden shadow-lg transition-transform hover:scale-105">
-                                {/* Post Image */}
-                                <div className="relative pb-[100%] bg-gray-700">
-                                    <img 
-                                        src={post.post} 
-                                        alt={post.caption || 'Saved post'} 
-                                        className="absolute h-full w-full object-cover hover:scale-140"
-                                    />
-                                </div>
-                                
-                                {/* Post Details */}
-                                <div className="p-4 absolute bottom-0 bg-zinc-950/80 w-full  translate-y-[200px] group-hover:translate-y-0 duration-500 transition-all">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <div className="flex items-center">
-                                            {post.avatar ? (
-                                                <img 
-                                                    src={post.avatar} 
-                                                    alt="Post author" 
-                                                    className="w-8 h-8 rounded-full mr-2"
-                                                />
-                                            ) : (
-                                                <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs font-bold mr-2">
-                                                    {post.username?.charAt(0).toUpperCase() || 'U'}
-                                                </div>
-                                            )}
-                                            <span className="font-semibold text-white">{post.user || 'Unknown'}</span>
-                                        </div>
-                                        <button className="text-gray-400 hover:text-white">
-                                            <FiMoreHorizontal />
-                                        </button>
-                                    </div>
-                                    
-                                    <p className="text-white mb-3 line-clamp-2">{post.caption}</p>
-                                    
-                                    {post.tags && (
-                                        <div className="flex flex-wrap gap-2 mb-3">
-                                            {post.tags.split(',').map((tag, i) => (
-                                                <span key={i} className="text-xs bg-gray-700 text-slate-200 px-2 py-1 rounded">
-                                                    #{tag.trim()}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    )}
-                                    
-                                    <div className="flex justify-between text-gray-400 text-sm">
-                                        <div className="flex items-center space-x-4">
-                                            <span className="flex items-center">
-                                                <FiHeart className="mr-1" /> {post.isLiked ? 'Liked' : '0'}
-                                            </span>
-                                            <span className="flex items-center">
-                                                <FiMessageSquare className="mr-1" /> 0
-                                            </span>
-                                        </div>
-                                        <span>
-                                            {post.createdAt ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true }) : 'Unknown date'}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+  <div
+    key={post._id || index}
+    className="bg-zinc-900 text-white rounded-lg overflow-hidden shadow border border-zinc-800"
+  >
+    {/* Header */}
+    <div className="flex items-center justify-between p-3">
+      <div className="flex items-center gap-2">
+        {post.avatar ? (
+          <img
+            src={post.avatar}
+            alt="Avatar"
+            className="w-8 h-8 rounded-full object-cover"
+          />
+        ) : (
+          <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center text-sm font-bold">
+            {post.username?.charAt(0).toUpperCase() || 'U'}
+          </div>
+        )}
+        <span className="text-sm font-semibold">{post.user || 'Unknown'}</span>
+      </div>
+      <FiMoreHorizontal className="text-gray-400 hover:text-white cursor-pointer" />
+    </div>
+
+    {/* Image */}
+    <div className="w-full h-[300px] bg-black">
+      <img
+        src={post.post}
+        alt={post.caption || 'Saved Post'}
+        className="w-full h-full object-cover"
+      />
+    </div>
+
+    {/* Action Icons */}
+    <div className="flex items-center gap-4 px-3 py-2 text-white text-xl">
+      <FiHeart className="cursor-pointer hover:scale-110 transition" />
+      <FiMessageSquare className="cursor-pointer hover:scale-110 transition" />
+      <FiBookmark className="ml-auto cursor-pointer hover:scale-110 transition" />
+    </div>
+
+    {/* Caption */}
+    <div className="px-3 pb-2 text-sm">
+      <span className="font-semibold">{post.user || 'Unknown'}</span>{" "}
+      {post.caption || "Untitled Post"}
+    </div>
+
+    {/* Tags */}
+    {post.tags && (
+      <div className="px-3 pb-1 text-sm text-blue-400">
+        {post.tags.split(',').map((tag, i) => (
+          <span key={i} className="mr-2">
+            #{tag.trim()}
+          </span>
+        ))}
+      </div>
+    )}
+
+    {/* Time */}
+    <div className="px-3 pb-3 text-xs text-gray-500">
+      {post.createdAt
+        ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
+        : 'Unknown date'}
+    </div>
+  </div>
+))}
+
+
+
                     </div>
                 )}
             </div>

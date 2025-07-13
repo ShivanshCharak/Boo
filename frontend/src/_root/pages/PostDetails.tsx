@@ -1,15 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 
 import { INITIAL_POST_VALUES, IPostData } from "../../types";
+import { sessionToHook } from "../../utils/sessionToHook";
+import { UnAuthorize } from "../../utils/sessionToHook";
 
 function PostDetails() {
   const [postData, setPostData] = useState<IPostData>(INITIAL_POST_VALUES);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
   const [comment, setComment] = useState<String>("");
   const [commentArray, setCommentArray] = useState<String[]>([""]);
   const { id } = useParams();
+  const nav = useNavigate()
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -18,8 +21,8 @@ function PostDetails() {
           `http://localhost:3000/api/v1/user/sendPosts`,
           {
             method: "POST",
+            credentials:"include",
             headers: {
-              authorization: `Bearer ${currentUser.accessToken}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ id: id }), // Send id as JSON object
@@ -32,6 +35,15 @@ function PostDetails() {
 
         const res = await response.json();
         setPostData(res.data);
+         async function hydrate() {
+                    const current = await sessionToHook()                                            // STORING SESSION DATA TO HOOK
+                    setCurrentUser(current)
+                    const unvalid = await UnAuthorize()
+                    if (unvalid) {
+                      nav("/")
+                    }
+                  }
+                  hydrate()
       } catch (error) {
         console.error(error);
       }

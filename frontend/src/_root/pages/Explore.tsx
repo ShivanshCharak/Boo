@@ -1,16 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../utils/contexts/AuthContext";
 import { IPostData } from "../../types";
+import { sessionToHook, UnAuthorize } from "../../utils/sessionToHook";
+import { useNavigate } from "react-router-dom";
+
 
 function Explore() {
   const [postData, setPostData] = useState<IPostData[]>([]);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser,setCurrentUser } = useContext(AuthContext);
+  const nav = useNavigate()
   useEffect(() => {
     fetch("http://localhost:3000/api/v1/user/sendPosts", {
       method: "POST",
-      headers: {
-        authorization: `Bearer ${currentUser.accessToken}`,
-      },
+      credentials:"include"
     })
       .then(async (response) => {
         console.log(response); // Print the response object
@@ -19,6 +21,15 @@ function Explore() {
         setPostData(res.data);
       })
       .catch((err) => console.log(err.message));
+      async function hydrate() {
+            const current = await sessionToHook()                                            // STORING SESSION DATA TO HOOK
+            setCurrentUser(current)
+            const unvalid = await UnAuthorize()
+            if (unvalid) {
+              nav("/")
+            }
+          }
+          hydrate()
   }, []);
   return (
     <div className="explore-container">

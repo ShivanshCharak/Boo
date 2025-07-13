@@ -16,7 +16,7 @@ interface FormValues {
 }
 
 function SignupForm() {
-  const { setCurrentUser } = useContext(AuthContext);
+  const { setCurrentUser,currentUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const nav = useNavigate();
   
@@ -53,27 +53,30 @@ function SignupForm() {
         credentials: "include",
         body: JSON.stringify(values)
       });
-
       const res = await response.json();
       console.log("Signup Response:", res);
-
+      
       if (!response.ok) {
         throw new Error(res.message || 'Registration failed');
       }
-
+      
       if (res.success && res.data) {
         // Handle both possible response structures
         const userData = res.data.user ;
-       console.log(res.data,userData._id,userData.username, userData.avatar,userData.accessToken) 
+        console.log(userData)
         // Set user with all required fields
         setCurrentUser({
           _id: userData._id,
           username: userData.username,
           avatar: userData.avatar || '',
-          accessToken: res.accessToken,
+          accessToken: res.data.accessToken,
+          refreshToken:res.data.refreshToken,
+          shortName:userData.username
           // refreshToken: userData.refreshToken
         });
-
+        console.log(currentUser) 
+        
+        sessionStorage.setItem("user",JSON.stringify(currentUser))
         toast.success('Account created successfully!', {
           theme: 'dark',
           autoClose: 2000,

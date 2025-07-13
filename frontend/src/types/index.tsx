@@ -1,8 +1,8 @@
 export type ICurrentUser={
     _id?:string,
     username:string,
-    refreshToken:string,
-    accessToken:string,
+    refreshToken?:string,
+    accessToken?:string,
     avatar:string|URL,
     shortName:string
 }

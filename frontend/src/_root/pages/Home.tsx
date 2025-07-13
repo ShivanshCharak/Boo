@@ -1,20 +1,22 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../../utils/contexts/AuthContext";
+import { set, get, del } from 'idb-keyval';
 import { IPostData } from "../../types";
+
 
 function Home() {
   const [postData, setPostsData] = useState<IPostData[]>([]);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser,setCurrentUser } = useContext(AuthContext);
   const [topPosts, setTopPosts] = useState(postData);
 {console.log(currentUser)}
   useEffect(() => {
+    const userData  =  sessionStorage.getItem("user")
+    JSON.stringify(userData))
+    // setCurrentUser(JSON.parse(userData))
     fetch("http://localhost:3000/api/v1/user/sendPosts", {
       method: "POST",
-      headers: {
-        authorization: `bearer ${currentUser.accessToken}`,
-      },
+      credentials:"include"
     }).then(async (response) => {
       let res = await response.json();
       res = res.data;
@@ -25,7 +27,8 @@ function Home() {
       );
       setTopPosts(res.slice(0, 3));
     });
-  }, [currentUser.accessToken]);
+  }, []);
+
 
 
   function handleSavedPost(id: string): void {
@@ -38,6 +41,30 @@ function Home() {
         }
       });
     });
+    const savePost = async () => {
+      await set('unsaved-post', postData); // save to local immediately
+    
+      // try {
+      //   const res = await fetch('/api/save-post', {
+      //     method: 'POST',
+      //     body: JSON.stringify(postData),
+      //   });
+    
+      //   if (res.ok) {
+      //     await del('unsaved-post'); // remove local cache
+      //     // showToast('Post saved!');
+      //   } else {
+      //     throw new Error('Failed to save');
+      //   }
+      // } catch (err) {
+      //   console.error(err);
+      //   // showToast('Post saved locally. Will retry.');
+      // } finally {
+      //   // setSaving(false);
+      // }
+    };
+    savePost()
+    
   }
 
   function handleIsLiked(id: string) {
@@ -76,7 +103,7 @@ function Home() {
                 <div className="ml-14 mb-8 mt-10">
                 <p className="font-semibold mb-6">{post.caption}</p> 
                 {post.tags?.split(",").map((val,index)=>(
-                  <span className="text-sm  p-2 cursor-pointer hover:bg-zinc-600 bg-zinc-800 rounded-md ml-5  " key={index}># {val}</span>
+                  <span className="text-xs  p-2 cursor-pointer hover:bg-zinc-600 bg-zinc-800 rounded-md ml-5  " key={index}># {val}</span>
                 ))}                   
                 </div>
                 <div className="bottom-card-container ">
@@ -109,6 +136,7 @@ function Home() {
                       }
                       alt="Save button"
                     />
+                    
                   </div>
                 </div>
               </div>
@@ -120,7 +148,7 @@ function Home() {
         <h2 className="heading">Top Posts</h2>
         {topPosts &&
           topPosts.map((post) => (
-            <div key={post._id} className="mb-4">
+            <div key={post._id} className="mb-4 border border-zinc-800 p-3 rounded-lg">
               <Link to={`/postDetails/${post._id}`}>
                 <img
                   className="w-full h-auto rounded-3xl"
@@ -128,10 +156,21 @@ function Home() {
                   alt=""
                 />
               </Link>
-              <h3 className="font-bold mt-2">{post.caption}</h3>
-              <p className="text-light-3">
-                {post.user} - {post.createdAt}
+              <div className="flex items-center">
+              <img className="w-[20px] h-[20px] mr-7 rounded-full" src={post.avatar} alt="" />
+              <p className="text-light-3 text-xs mt-5">
+                {post.user}
               </p>
+
+              </div>
+              <p className=" text-xs font-semibold text-slate-500">{post.createdAt}</p>
+              <h3 className="font-bold mt-2 text-white">{post.caption}</h3>
+              <p className="text-light-3">
+                {post.caption}
+              </p>
+              {post.tags?.split(",").map((val,index)=>(
+               <p key={index}>{val}</p>
+              ))}
             </div>
           ))}
       </div>

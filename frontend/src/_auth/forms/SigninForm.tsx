@@ -40,8 +40,25 @@ function SigninForm() {
       })
       .then(async (response) => {
         const res = await response.json();
+        console.log(res,"fkkl")
         if (res.statusCode === 200) {
-          setCurrentUser(res.data);
+          // console.log("userdata",userData)
+          const userData = {
+            _id: res.data.user._id,
+            username: res.data.user.username,
+            avatar: res.data.user.avatar || '',
+            accessToken: res.data.accessToken,
+            refreshToken: res.data.refreshToken,
+            shortName: res.data.user.username
+          };
+          
+          setCurrentUser(userData); // ✅ Triggers re-render
+          console.log("user",currentUser)
+          // ✅ Use the same data directly
+          sessionStorage.setItem("user", JSON.stringify(userData));
+          
+          console.log(currentUser)
+          sessionStorage.setItem("user",JSON.stringify(currentUser))
           toast.success("Login successful! Redirecting...", {
             position: "top-center",
             autoClose: 2000,

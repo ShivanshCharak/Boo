@@ -15,7 +15,7 @@ import UserProfile from './_root/pages/UserProfile'
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<AuthLayout/>}/>
+      <Route path="/" element={<SignupForm/>}/>
         <Route path="/signup" element={<SignupForm/>}/>
         <Route path="/signin" element={<SigninForm/>}/>
         <Route element={<RootLayout/>}>

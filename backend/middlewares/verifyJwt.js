@@ -1,13 +1,14 @@
 import jwt from "jsonwebtoken";
+
 import { User } from "../schemas/userSchema.js";
 import { ApiError } from "../utils/ApiError.js";
 async function verifyJwt(req, res, next) {
  try {
-   const accessToken =req.headers.authorization.split(" ")[1];
+   const accessToken =req.cookies.accessToken
 
    const data = await jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-
    if(!data) throw new ApiError(500,"Failed to verify")
+    console.log(data)
    const foundedUser = await User.findById(data?._id).select("-password -accessToken");
 
    if (!foundedUser)
